@@ -36,9 +36,12 @@ async def say(ctx,*,tosay):
 @client.command()
 async def fg(ctx,tojoin: discord.Member = None,*,bet: int = None):
     if tojoin != None and bet != None:
-        #await ctx.message.delete()
-        await ctx.send(f"{tojoin} ``you was invited to the fastgame by`` {ctx.message.author}\n``Bet: ``{bet}\n``To join type: `` !fg")
-        await write_a_game(tojoin.id, ctx.message.author.id, bet)
+        if tojoin.id != ctx.message.author.id:
+            #await ctx.message.delete()
+            await ctx.send(f"{tojoin} ``you was invited to the fastgame by`` {ctx.message.author}\n``Bet: ``{bet}\n``To join type: `` !fg")
+            await write_a_game(tojoin.id, ctx.message.author.id, bet)
+        else:
+            await ctx.send(f"{tojoin} ``you can't invite yourself to the game``")
     if tojoin == None and bet == None:
         is_game_exists = os.path.isfile(f"running_games/{ctx.message.author.id}.txt")
         if is_game_exists:
